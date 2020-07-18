@@ -1,9 +1,8 @@
 import React, { useEffect, useState } from 'react';
-import Spinner from 'reactjs-simple-spinner';
 import axios from 'axios';
 import Blog from './Blog';
 
-const Blogs = () => {
+const Blogs = (props) => {
     const [posts, setPosts] = useState();
     useEffect(() => {
         axios.get('http://localhost:3000/blogs')
@@ -13,7 +12,7 @@ const Blogs = () => {
             .catch((err) => {
                 console.log(err);
             })
-    }, [posts])
+    }, [])
     return (
         <section className="text-gray-700 body-font">
             <div className="container px-5 py-24 mx-auto">
@@ -30,9 +29,9 @@ const Blogs = () => {
 
                 {posts ?
                     <div className="flex flex-wrap sm:-m-4 -mx-4 -mb-10 -mt-4">
-                        {posts.map(post => (<Blog post={post} />))}
+                        {posts.map(post => <Blog post={post} key={post._id} />)}
                     </div>
-                    : <div className="p-4 md:w-1/1 sm:mb-0 mb-6 self-center"><Spinner message="loading" size="88" /></div>
+                    : <div className="p-4 md:w-1/1 sm:mb-0 mb-6 self-center"><div style={{ textAlign: 'center' }}><h1>loading</h1></div></div>
                 }
 
 

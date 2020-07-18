@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { Link } from 'react-router-dom';
 import axios from 'axios';
 import moment from 'moment';
 
@@ -22,7 +23,7 @@ const PostPage = (props) => {
                 <div className="container px-5 py-24 mx-auto flex flex-col">
                     <div className="lg:w-4/6 mx-auto">
                         <div className="rounded-lg h-64 overflow-hidden">
-                            <img alt="content" className="object-cover object-center h-full w-full" src="https://dummyimage.com/1200x500" />
+                            <img alt="content" className="object-cover object-center h-full w-full" src={decodeURI(post.details.imageUrl)} />
                         </div>
                         <div className="flex flex-col sm:flex-row mt-10">
                             <div className="sm:w-1/3 text-center sm:pr-8 sm:py-8">
@@ -50,7 +51,42 @@ const PostPage = (props) => {
                                 <div>{moment(post.details.date).format('ddd DD MMMM, YYYY')}</div>
                             </div>
                         </div>
+
+                        <h1 className="text-2xl font-semibold mt-20 px-5">Comments</h1>
+
+                        <div className="container px-5 py-10 mx-auto">
+                            <div className="-my-8">
+                                {post.comments.length ? post.comments.map((comment, index) => (
+
+                                    <div className={`py-8 flex flex-wrap md:flex-no-wrap ${index > 0 ? 'border-t-2' : ''}`} key={comment._id}>
+                                        <div className="md:w-64 md:mb-0 mb-6 flex-shrink-0 flex flex-col">
+                                            <span className="tracking-widest font-medium title-font text-gray-900">{comment.author}</span>
+                                            <span className="mt-1 text-gray-500 text-sm">{moment(comment.date).format('ddd DD MMMM, YYYY')}</span>
+                                        </div>
+                                        <div className="md:flex-grow">
+                                            <p className="leading-relaxed">{comment.body}</p>
+                                        </div>
+
+                                    </div>
+
+                                )) : (
+                                        <div>
+                                            <h3>No comments on this post</h3>
+                                        </div>
+                                    )}
+                            </div>
+                        </div>
+
+                        <footer className="flex justify-center border-t-2 pt-10">
+                            <Link to="/">
+                                <span class="bg-transparent hover:bg-red-500 text-red-700 font-semibold hover:text-white py-2 px-4 border border-red-500 hover:border-transparent rounded">
+                                    Back
+                                </span>
+                            </Link>
+                        </footer>
+
                     </div>
+
                 </div>
             ) : (
                     <div>
@@ -58,8 +94,10 @@ const PostPage = (props) => {
                             <h2>Loading</h2>
                         </div>
                     </div>
-                )}
-        </section>
+                )
+            }
+
+        </section >
     )
 }
 

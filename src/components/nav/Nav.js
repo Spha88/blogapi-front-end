@@ -36,7 +36,7 @@ const Nav = ({ loggedIn, logout, user }) => {
                     {!loggedIn ? (
                         <div>
                             <Link to="/login">
-                                <span className="inline-block text-sm px-4 py-2 leading-none border rounded text-white border-white hover:border-transparent hover:text-teal-500 hover:bg-white mt-4 lg:mt-0">Log In</span>
+                                <span className="inline-block text-sm px-4 py-2 mr-5 leading-none border rounded text-white border-white hover:border-transparent hover:text-teal-500 hover:bg-white mt-4 lg:mt-0">Log In</span>
                             </Link>
                             {' '}
                             <Link to="/signup">

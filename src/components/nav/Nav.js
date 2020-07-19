@@ -1,7 +1,16 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 
 const Nav = () => {
+    const [loggedIn, setLoggedIn] = useState(false);
+
+    useEffect(() => {
+        let token = localStorage.getItem('myJwt');
+        console.log(token);
+        if (token) setLoggedIn(true);
+    }, [])
+
+    console.log(loggedIn);
 
     return (
         <header className="bg-teal-800">
@@ -23,15 +32,19 @@ const Nav = () => {
                             </span>
                         </Link>
                     </div>
-                    <div>
-                        <Link to="/login">
-                            <span className="inline-block text-sm px-4 py-2 leading-none border rounded text-white border-white hover:border-transparent hover:text-teal-500 hover:bg-white mt-4 lg:mt-0">Log In</span>
-                        </Link>
-                        {' '}
-                        <Link to="/signup">
-                            <span className="text-green-200">Register</span>
-                        </Link>
-                    </div>
+
+                    {!loggedIn && (
+                        <div>
+                            <Link to="/login">
+                                <span className="inline-block text-sm px-4 py-2 leading-none border rounded text-white border-white hover:border-transparent hover:text-teal-500 hover:bg-white mt-4 lg:mt-0">Log In</span>
+                            </Link>
+                            {' '}
+                            <Link to="/signup">
+                                <span className="text-green-200">Register</span>
+                            </Link>
+                        </div>
+                    )}
+
                 </div>
             </nav>
         </header>

@@ -79,7 +79,7 @@ const PostPage = (props) => {
 
                         <footer className="flex justify-center border-t-2 pt-10">
                             <Link to="/">
-                                <span class="bg-transparent hover:bg-red-500 text-red-700 font-semibold hover:text-white py-2 px-4 border border-red-500 hover:border-transparent rounded">
+                                <span className="bg-transparent hover:bg-red-500 text-red-700 font-semibold hover:text-white py-2 px-4 border border-red-500 hover:border-transparent rounded">
                                     Back
                                 </span>
                             </Link>

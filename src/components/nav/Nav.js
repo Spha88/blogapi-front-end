@@ -1,16 +1,9 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import { Link } from 'react-router-dom';
+import { connect } from 'react-redux';
+import { logout } from '../../store/actions/authentication';
 
-const Nav = () => {
-    const [loggedIn, setLoggedIn] = useState(false);
-
-    useEffect(() => {
-        let token = localStorage.getItem('myJwt');
-        console.log(token);
-        if (token) setLoggedIn(true);
-    }, [])
-
-    console.log(loggedIn);
+const Nav = ({ loggedIn, logout, user }) => {
 
     return (
         <header className="bg-teal-800">
@@ -33,7 +26,7 @@ const Nav = () => {
                         </Link>
                     </div>
 
-                    {!loggedIn && (
+                    {!loggedIn ? (
                         <div>
                             <Link to="/login">
                                 <span className="inline-block text-sm px-4 py-2 leading-none border rounded text-white border-white hover:border-transparent hover:text-teal-500 hover:bg-white mt-4 lg:mt-0">Log In</span>
@@ -43,12 +36,23 @@ const Nav = () => {
                                 <span className="text-green-200">Register</span>
                             </Link>
                         </div>
-                    )}
+                    ) : (
+                            <>
+                                <span className="text-white mr-5">{user.first_name}</span>
+                                <Link to="/">
+                                    <span className="text-green-200" onClick={() => logout()}>Logout</span>
+                                </Link>
+                            </>
+                        )}
 
                 </div>
             </nav>
         </header>
     )
 }
+const mapStateToProps = state => ({
+    loggedIn: state.auth.loggedIn,
+    user: state.auth.user
+})
 
-export default Nav
+export default connect(mapStateToProps, { logout })(Nav)

@@ -9,7 +9,7 @@ const logIn = (user) => {
 }
 
 export const authenticate = loginDetails => dispatch => {
-    axios.post('http://localhost:3000/auth/login', { ...loginDetails })
+    axios.post('/auth/login', { ...loginDetails })
         .then(res => {
             localStorage.setItem('myJwt', res.data.token);
             localStorage.setItem('currentUser', JSON.stringify(res.data.user));

@@ -24,6 +24,13 @@ const Nav = ({ loggedIn, logout, user }) => {
                                 Blog
                             </span>
                         </Link>
+                        {loggedIn && (
+                            <Link to="/new">
+                                <span className="block mt-4 mx-4 lg:inline-block lg:mt-0 text-teal-200 hover:text-white">
+                                    Add Post
+                            </span>
+                            </Link>
+                        )}
                     </div>
 
                     {!loggedIn ? (
@@ -38,9 +45,11 @@ const Nav = ({ loggedIn, logout, user }) => {
                         </div>
                     ) : (
                             <>
-                                <span className="text-white mr-5">{user.first_name}</span>
+                                <Link to="/user">
+                                    <span className="text-white mr-5">{user.first_name}</span>
+                                </Link>
                                 <Link to="/">
-                                    <span className="text-green-200" onClick={() => logout()}>Logout</span>
+                                    <span className="inline-block text-sm px-4 py-2 leading-none border rounded text-red-500 border-red-500 hover:border-transparent hover:text-white hover:bg-red-500 mt-4 lg:mt-0" onClick={() => logout()}>Logout</span>
                                 </Link>
                             </>
                         )}

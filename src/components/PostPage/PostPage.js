@@ -1,13 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import axios from 'axios';
+import axios from '../../axios-api';
 import moment from 'moment';
 
 
 const PostPage = (props) => {
     const [post, setPost] = useState(null);
     useEffect(() => {
-        axios.get(`http://localhost:3000/blogs/${props.match.params.id}`)
+        axios.get(`/blogs/${props.match.params.id}`)
             .then(res => {
                 setPost(res.data.post)
             })

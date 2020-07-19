@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from 'react';
-import axios from 'axios';
+import axios from '../../axios-api';
 import Blog from './Blog';
 
 const Blogs = (props) => {
     const [posts, setPosts] = useState();
     useEffect(() => {
-        axios.get('http://localhost:3000/blogs')
+        axios.get('/blogs')
             .then((res) => {
                 setPosts(res.data.posts);
             })
@@ -33,8 +33,6 @@ const Blogs = (props) => {
                     </div>
                     : <div className="p-4 md:w-1/1 sm:mb-0 mb-6 self-center"><div style={{ textAlign: 'center' }}><h1>loading</h1></div></div>
                 }
-
-
             </div>
         </section>
     )

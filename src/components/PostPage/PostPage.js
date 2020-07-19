@@ -2,11 +2,12 @@ import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import axios from '../../axios-api';
 import moment from 'moment';
+import AddCommentForm from '../UI/AddCommentForm';
 
 
 const PostPage = (props) => {
     const [post, setPost] = useState(null);
-    useEffect(() => {
+    const fetchPost = () => {
         axios.get(`/blogs/${props.match.params.id}`)
             .then(res => {
                 setPost(res.data.post)
@@ -14,9 +15,22 @@ const PostPage = (props) => {
             .catch(err => {
                 console.log(err);
             })
+    }
+    const addComment = commentData => {
+        axios.post(`/blogs/${props.match.params.id}/comment`, { ...commentData })
+            .then(res => {
+                console.log(res.data);
+                fetchPost();
+            })
+            .catch(err => {
+                console.log(err);
+            })
+    }
+    useEffect(() => {
+        fetchPost()
         // eslint-disable-next-line
     }, [])
-    console.log(post);
+
     return (
         <section className="text-gray-700 body-font">
             {post ? (
@@ -76,6 +90,8 @@ const PostPage = (props) => {
                                     )}
                             </div>
                         </div>
+
+                        <AddCommentForm addComment={addComment} />
 
                         <footer className="flex justify-center border-t-2 pt-10">
                             <Link to="/">

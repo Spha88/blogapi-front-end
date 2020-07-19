@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { connect } from 'react-redux';
+import { Link } from 'react-router-dom';
 import axios from '../../axios-api';
 import Blog from '../Blog/Blog';
 
@@ -8,14 +9,17 @@ const UserPage = ({ user }) => {
     const [posts, setPosts] = useState()
     const { first_name, last_name, _id } = user;
     useEffect(() => {
-        axios.get(`/blogs/user/${_id}`)
-            .then((res) => {
-                setPosts(res.data.posts);
-            })
-            .catch((err) => {
-                console.log(err);
-            })
-    }, [_id])
+        if (user) {
+            axios.get(`/blogs/user/${_id}`)
+                .then((res) => {
+                    console.log(res.data);
+                    setPosts(res.data.posts);
+                })
+                .catch((err) => {
+                    console.log(err);
+                })
+        }
+    }, [_id, user])
 
     return (
         <div>
@@ -28,7 +32,9 @@ const UserPage = ({ user }) => {
                         <h1 className="title-font sm:text-4xl text-3xl mb-4 font-medium text-gray-900">{first_name + ' ' + last_name} </h1>
                         <p className="mb-8 leading-relaxed">Copper mug try-hard pitchfork pour-over freegan heirloom neutra air plant cold-pressed tacos poke beard tote bag. Heirloom echo park mlkshk tote bag selvage hot chicken authentic tumeric truffaut hexagon try-hard chambray.</p>
                         <div className="flex justify-center">
-                            <button className="inline-flex text-white bg-teal-500 border-0 py-2 px-6 focus:outline-none hover:bg-teal-600 rounded text-lg">Button</button>
+                            <Link to="/new">
+                                <button className="inline-flex text-white bg-teal-500 border-0 py-2 px-6 focus:outline-none hover:bg-teal-600 rounded text-lg">Add Post</button>
+                            </Link>
                             <button className="ml-4 inline-flex text-gray-700 bg-gray-200 border-0 py-2 px-6 focus:outline-none hover:bg-gray-300 rounded text-lg">Button</button>
                         </div>
                     </div>
@@ -36,7 +42,7 @@ const UserPage = ({ user }) => {
 
 
 
-                {posts ?
+                {posts && posts.length ?
                     <div className="container mx-auto">
                         <h2 className="mx-5 mb-5 text-2xl">Articles By {first_name}</h2>
 
@@ -48,12 +54,17 @@ const UserPage = ({ user }) => {
                             {posts.map(post => <Blog post={post} key={post._id} />)}
                         </div>
                     </div>
-                    : <div className="p-4 md:w-1/1 sm:mb-0 mb-6 self-center">
-                        <div style={{ textAlign: 'center' }}>
-                            <h1>loading</h1>
+                    : <div className="container mx-auto mb-20 text-center">
+                        <div className="mx-5 mb-10 h-1 bg-gray-200 rounded overflow-hidden">
+                            <div className="w-24 h-full bg-indigo-500"></div>
                         </div>
+                        <h2 className="mx-5 mb-3 text-2xl text-center">You have no posts yet</h2>
+                        <Link to="/new">
+                            <span className="inline-block btn border border-teal-800 px-5 py-1 rounded mt-5 hover:border-transparent hover:bg-teal-500 hover:text-white">Add a post</span>
+                        </Link>
                     </div>
                 }
+
             </section>
         </div>
     )

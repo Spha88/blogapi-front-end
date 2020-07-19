@@ -1,12 +1,13 @@
 import React from 'react';
 import { useForm } from 'react-hook-form';
-import { Redirect } from 'react-router-dom';
+import { Redirect, useHistory } from 'react-router-dom';
 import axios from '../../axios-api';
 
 const AddPost = () => {
     const { register, handleSubmit } = useForm();
-
+    let history = useHistory();
     const user = JSON.parse(localStorage.getItem('currentUser'));
+
 
     const onSubmit = data => {
         if (!user) return <Redirect to="/login" />
@@ -14,6 +15,7 @@ const AddPost = () => {
         axios.post(`/blogs`, { ...data })
             .then((res) => {
                 console.log(res);
+                history.push(`/blog/${res.data.post._id}`);
             })
             .catch((err) => {
                 console.log(err);
@@ -50,6 +52,15 @@ const AddPost = () => {
                                 className={`${inputClasses} resize-none block h-48`}
                                 ref={register}
                             ></textarea>
+                        </div>
+
+                        <div className="md:flex md:items-center p-2">
+                            <label className="block text-gray-500">
+                                <input className="mr-2 leading-tight" type="checkbox" ref={register} name="published" />
+                                <span className="">
+                                    Publish
+                                </span>
+                            </label>
                         </div>
 
                         <div className="p-2 w-full">

@@ -1,28 +1,34 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import axios from '../../axios-api';
+import { connect } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import validator from 'validator';
 
-const UserEditForm = () => {
-    const { register, handleSubmit, getValues, errors } = useForm();
-    const [state, setState] = useState({ error: false, message: '' })
+const UserEditForm = ({ user }) => {
+    const [state, setState] = useState({ error: '', message: '' });
+    const { register, handleSubmit, errors } = useForm();
+    const { first_name, last_name, _id } = user;
 
-    let history = useHistory();
-
-    const onSubmit = data => {
-        axios.post('http://localhost:3000/users', { ...data })
-            .then(res => {
-                history.push('/login')
+    const onSubmit = (data) => {
+        console.log(data);
+        if (user) {
+            axios.put(`/users/${_id}/update`, { ...data }, {
+                headers: { 'Authorization': `Bearer ${localStorage.getItem('myJwt')}` }
             })
-            .catch(err => {
-                setState({
-                    error: true,
-                    message: 'Could not register, try a different Email or Login'
+                .then((res) => {
+                    console.log(res.data);
                 })
-                console.log('Hello', err);
-            })
-    };
+                .catch((err) => {
+                    console.log(err);
+                })
+        }
+    }
+
+    useEffect(() => {
+        // fetchPosts();
+        // eslint-disable-next-line
+    }, [_id, user])
 
     const inputClasses = "bg-white rounded border focus:outline-none focus:border-teal-500 text-base px-4 py-2 mb-0"
     const errClasses = `text-xs mt-1 mb-4 text-red-800`
@@ -81,6 +87,16 @@ const UserEditForm = () => {
                     />
                     <p className={errClasses}>{errors.last_name && errors.last_name.message}</p>
 
+                    <input name="username" placeholder="Email" type="email"
+                        className={inputClasses + (errors.username ? " border-red-400" : "border-teal-400")}
+                        ref={register({
+                            required: 'Enter your email.',
+                            maxLength: { value: 100, message: 'Email address too long' },
+                            validate: value => validator.isEmail(value) || 'Invalid email address',
+                        })}
+                    />
+                    <p className={errClasses}>{errors.username && errors.username.message}</p>
+
                     <input name="imageUrl" placeholder="Profile pic (url)" type="text"
                         className={inputClasses}
                         ref={register}
@@ -88,7 +104,7 @@ const UserEditForm = () => {
                     <p className={errClasses}>{errors.last_name && errors.last_name.message}</p>
 
 
-                    <textarea className="" name="bio" placeholder="Bio"
+                    <textarea name="bio" placeholder="Bio"
                         className={`${inputClasses} resize-none block h-32`}
                         ref={register}
                     ></textarea>
@@ -102,4 +118,8 @@ const UserEditForm = () => {
     )
 }
 
-export default UserEditForm
+const mapStateToProps = state => ({
+    user: state.auth.user
+})
+
+export default connect(mapStateToProps)(UserEditForm)

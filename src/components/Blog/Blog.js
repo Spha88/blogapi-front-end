@@ -1,12 +1,11 @@
 import React, { useState } from 'react';
-import { Link, useHistory } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import { extract } from '../../helpers/helpers';
 import DeleteModal from '../UI/DeleteModal';
 import axios from '../../axios-api';
 
-const Blog = ({ post }) => {
+const Blog = ({ post, fetchPosts }) => {
     const [display, setDisplay] = useState(false)
-    let history = useHistory();
     let owner;
 
     // check if the user is logged in and display edit and delete button
@@ -19,10 +18,9 @@ const Blog = ({ post }) => {
         axios.delete(`/blogs/${post._id}`)
             .then(res => {
                 toggleDeleteModal();
-                history.push('/user')
+                fetchPosts();
             })
             .catch(err => console.log(err));
-
     }
 
     return (

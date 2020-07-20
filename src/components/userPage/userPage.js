@@ -8,17 +8,22 @@ const UserPage = ({ user }) => {
 
     const [posts, setPosts] = useState()
     const { first_name, last_name, _id } = user;
-    useEffect(() => {
+
+    const fetchPosts = () => {
         if (user) {
             axios.get(`/blogs/user/${_id}`)
                 .then((res) => {
-                    console.log(res.data);
                     setPosts(res.data.posts);
                 })
                 .catch((err) => {
                     console.log(err);
                 })
         }
+    }
+
+    useEffect(() => {
+        fetchPosts();
+        // eslint-disable-next-line
     }, [_id, user])
 
     return (
@@ -35,12 +40,12 @@ const UserPage = ({ user }) => {
                             <Link to="/new">
                                 <button className="inline-flex text-white bg-teal-500 border-0 py-2 px-6 focus:outline-none hover:bg-teal-600 rounded text-lg">Add Post</button>
                             </Link>
-                            <button className="ml-4 inline-flex text-gray-700 bg-gray-200 border-0 py-2 px-6 focus:outline-none hover:bg-gray-300 rounded text-lg">Button</button>
+                            <Link to="/user/edit">
+                                <button className="ml-4 inline-flex text-teals-700 bg-gray-200 border border-teal-500 py-2 px-6 focus:outline-none hover:bg-teal-800 hover:text-white rounded text-lg">Edit Profile</button>
+                            </Link>
                         </div>
                     </div>
                 </div>
-
-
 
                 {posts && posts.length ?
                     <div className="container mx-auto">
@@ -51,7 +56,7 @@ const UserPage = ({ user }) => {
                         </div>
 
                         <div className="flex px-5 flex-wrap sm:-m-4 -mx-4 -mb-10 -mt-4">
-                            {posts.map(post => <Blog post={post} key={post._id} />)}
+                            {posts.map(post => <Blog post={post} key={post._id} fetchPosts={fetchPosts} />)}
                         </div>
                     </div>
                     : <div className="container mx-auto mb-20 text-center">

@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import axios from '../../axios-api';
 import moment from 'moment';
 import AddCommentForm from '../UI/AddCommentForm';
+import { extract } from '../../helpers/helpers';
 
 
 const PostPage = (props) => {
@@ -31,6 +32,8 @@ const PostPage = (props) => {
         // eslint-disable-next-line
     }, [])
 
+    console.log(post);
+
     return (
         <section className="text-gray-700 body-font">
             {post ? (
@@ -41,16 +44,17 @@ const PostPage = (props) => {
                         </div>
                         <div className="flex flex-col sm:flex-row mt-10">
                             <div className="sm:w-1/3 text-center sm:pr-8 sm:py-8">
-                                <div className="w-20 h-20 rounded-full inline-flex items-center justify-center bg-gray-200 text-gray-400">
+                                <div className="w-20 h-20 overflow-hidden rounded-full inline-flex items-center justify-center bg-gray-200 text-gray-400">
                                     <svg fill="none" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" className="w-10 h-10" viewBox="0 0 24 24">
                                         <path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"></path>
                                         <circle cx="12" cy="7" r="4"></circle>
                                     </svg>
+                                    <img src={post.details.author.imageUrl} className="object-cover" alt="author image" />
                                 </div>
                                 <div className="flex flex-col items-center text-center justify-center">
                                     <h2 className="font-medium title-font mt-4 text-gray-900 text-lg">{`${post.details.author.first_name} ${post.details.author.last_name}`}</h2>
                                     <div className="w-12 h-1 bg-indigo-500 rounded mt-2 mb-4"></div>
-                                    <p className="text-base text-gray-600">Raclette knausgaard hella meggs normcore williamsburg enamel pin sartorial venmo tbh hot chicken gentrify portland.</p>
+                                    <p className="text-base text-gray-600">{extract(post.details.author.bio, 100)}</p>
                                 </div>
                             </div>
 
@@ -117,4 +121,4 @@ const PostPage = (props) => {
     )
 }
 
-export default PostPage
+export default PostPage;

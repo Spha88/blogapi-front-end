@@ -7,15 +7,12 @@ import Blog from '../Blog/Blog';
 const UserPage = ({ user }) => {
 
     const [posts, setPosts] = useState()
-    const [userProfile, setUserProfile] = useState();
-    const { first_name, last_name, _id } = user;
 
     const fetchPosts = () => {
         if (user) {
-            axios.get(`/blogs/user/${_id}`)
+            axios.get(`/blogs/user/${user._id}`)
                 .then((res) => {
                     setPosts(res.data.posts);
-                    setUserProfile(res.data.user);
                 })
                 .catch((err) => {
                     console.log(err);
@@ -26,20 +23,18 @@ const UserPage = ({ user }) => {
     useEffect(() => {
         fetchPosts();
         // eslint-disable-next-line
-    }, [_id, user])
-
-    console.log(userProfile);
+    }, [user])
 
     return (
         <div>
             <section className="text-gray-700 body-font">
                 <div className="container mx-auto flex px-5 py-24 md:flex-row flex-col items-center">
                     <div className="lg:max-w-lg lg:w-full md:w-1/2 w-5/6 mb-10 md:mb-0">
-                        <img className="object-cover object-center rounded" alt="hero" src={userProfile && userProfile.imageUrl} />
+                        <img className="object-cover object-center rounded" alt="hero" src={user.imageUrl} />
                     </div>
                     <div className="lg:flex-grow md:w-1/2 lg:pl-24 md:pl-16 flex flex-col md:items-start md:text-left items-center text-center">
-                        <h1 className="title-font sm:text-4xl text-3xl mb-4 font-medium text-gray-900">{first_name + ' ' + last_name} </h1>
-                        <p className="mb-8 leading-relaxed">{userProfile && userProfile.bio}</p>
+                        <h1 className="title-font sm:text-4xl text-3xl mb-4 font-medium text-gray-900">{user.first_name + ' ' + user.last_name}</h1>
+                        <p className="w-full mb-8 leading-relaxed">{user.bio}</p>
                         <div className="flex justify-center">
                             <Link to="/new">
                                 <button className="inline-flex text-white bg-teal-500 border-0 py-2 px-6 focus:outline-none hover:bg-teal-600 rounded text-lg">Add Post</button>
@@ -53,7 +48,7 @@ const UserPage = ({ user }) => {
 
                 {posts && posts.length ?
                     <div className="container mx-auto">
-                        <h2 className="mx-5 mb-5 text-2xl">Articles By {first_name}</h2>
+                        <h2 className="mx-5 mb-5 text-2xl">Articles By {user.first_name}</h2>
 
                         <div className="mx-5 mb-20 h-1 bg-gray-200 rounded overflow-hidden">
                             <div className="w-24 h-full bg-indigo-500"></div>

@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import './App.css';
 import Nav from './components/nav/Nav';
@@ -15,10 +15,7 @@ import { checkAuth } from './store/actions/index';
 
 function App({ checkAuth }) {
 
-  useEffect(() => {
-    checkAuth();
-    // eslint-disable-next-line
-  }, []);
+  checkAuth();
 
   return (
     <Router>

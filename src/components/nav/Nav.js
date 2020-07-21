@@ -1,9 +1,15 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { logout } from '../../store/actions/authentication';
 
 const Nav = ({ loggedIn, logout, user }) => {
+
+    const [currentUser, setCurrentUser] = useState();
+
+    useEffect(() => {
+        setCurrentUser(user);
+    }, [user]);
 
     return (
         <header className="bg-teal-800">
@@ -46,7 +52,7 @@ const Nav = ({ loggedIn, logout, user }) => {
                     ) : (
                             <>
                                 <Link to="/user">
-                                    <span className="text-white mr-5">{user.first_name}</span>
+                                    <span className="text-white mr-5">{currentUser && currentUser.first_name}</span>
                                 </Link>
                                 <Link to="/">
                                     <span className="inline-block text-sm px-4 py-2 leading-none border rounded text-red-500 border-red-500 hover:border-transparent hover:text-white hover:bg-red-500 mt-4 lg:mt-0" onClick={() => logout()}>Logout</span>

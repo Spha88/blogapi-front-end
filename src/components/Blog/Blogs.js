@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import axios from '../../axios-api';
 import Blog from './Blog';
-import { motion } from 'framer-motion';
 
 const Blogs = (props) => {
     const [posts, setPosts] = useState();

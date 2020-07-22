@@ -9,10 +9,14 @@ import Signup from './components/Auth/Signup';
 import UserPage from './components/userPage/userProfile';
 import UserPosts from './components/userPage/userPosts';
 import AddPost from './components/AddPost/AddPost';
+import EditPost from './components/AddPost/EditPost';
 import UserEditForm from './components/userPage/UserEditForm';
 
 import { connect } from 'react-redux';
 import { checkAuth } from './store/actions/index';
+
+import PrivateRouter from './helpers/PrivateRoute';
+
 
 function App({ checkAuth }) {
 
@@ -28,8 +32,9 @@ function App({ checkAuth }) {
           <Route exact path="/login" component={Login} />
           <Route exact path="/signup" component={Signup} />
           <Route exact path="/user" component={UserPage} />
-          <Route exact path="/user/:id" component={UserPosts} />
           <Route exact path="/user/edit" component={UserEditForm} />
+          <Route exact path="/user/:id" component={UserPosts} />
+          <Route exact path="/blog/:id/edit" component={EditPost} />
           <Route exact path="/new" component={AddPost} />
         </Switch>
       </div>

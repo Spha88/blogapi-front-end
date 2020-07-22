@@ -47,7 +47,8 @@ const Blog = ({ post, fetchPosts }) => {
                 </div>
                 {owner && (
                     <div className="w-2/3 flex justify-end">
-                        <button className="inline-block text-sm text-teal-500 px-4 py-0 leading-none rounded  border-teal-800 hover:border-transparent hover:text-white hover:bg-teal-800 mt-4 lg:mt-0">Edit</button>
+                        {!post.published && <a className="inline-block text-sm text-teal-500 px-4 py-1 leading-none rounded border-teal-800 hover:border-transparent hover:text-white hover:bg-teal-800 mt-4 lg:mt-0" href={`/blog/${post._id}/edit`}>Publish</a>}
+                        <a className="inline-block text-sm text-teal-500 px-4 py-1 leading-none rounded border-teal-800 hover:border-transparent hover:text-white hover:bg-teal-800 mt-4 lg:mt-0" href={`/blog/${post._id}/edit`}>Edit</a>
                         <button className="inline-block text-sm text-red-500 px-4 py-1 leading-none rounded border-red-500 hover:border-transparent hover:text-white hover:bg-red-500 mt-4 lg:mt-0" onClick={toggleDeleteModal}>Delete</button>
                     </div>
                 )}

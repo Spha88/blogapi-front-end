@@ -49,10 +49,10 @@ const UserPage = ({ user }) => {
                         <p className="w-full mb-8 leading-relaxed">{user.bio}</p>
                         <div className="flex justify-center">
                             <Link to="/new">
-                                <button className="inline-flex text-white bg-teal-500 border-0 py-2 px-6 focus:outline-none hover:bg-teal-600 rounded text-lg">Add Post</button>
+                                <button className="ml-4 inline-flex text-teals-700 text-sm bg-gray-200 border border-teal-500 py-1 px-6 focus:outline-none hover:bg-teal-800 hover:text-white rounded">Add Post</button>
                             </Link>
                             <Link to="/user/edit">
-                                <button className="ml-4 inline-flex text-teals-700 bg-gray-200 border border-teal-500 py-2 px-6 focus:outline-none hover:bg-teal-800 hover:text-white rounded text-lg">Edit Profile</button>
+                                <button className="ml-4 inline-flex text-teals-700 text-sm bg-gray-200 border border-teal-500 py-1 px-6 focus:outline-none hover:bg-teal-800 hover:text-white rounded">Edit Profile</button>
                             </Link>
                         </div>
                     </div>

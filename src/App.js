@@ -15,7 +15,7 @@ import UserEditForm from './components/userPage/UserEditForm';
 import { connect } from 'react-redux';
 import { checkAuth } from './store/actions/index';
 
-import PrivateRouter from './helpers/PrivateRoute';
+import PrivateRoute from './helpers/PrivateRoute';
 
 
 function App({ checkAuth }) {
@@ -31,11 +31,13 @@ function App({ checkAuth }) {
           <Route exact path="/blog/:id" component={PostPage} />
           <Route exact path="/login" component={Login} />
           <Route exact path="/signup" component={Signup} />
-          <Route exact path="/user" component={UserPage} />
-          <Route exact path="/user/edit" component={UserEditForm} />
-          <Route exact path="/user/:id" component={UserPosts} />
-          <Route exact path="/blog/:id/edit" component={EditPost} />
-          <Route exact path="/new" component={AddPost} />
+
+          <PrivateRoute exact path="/user/edit" component={UserEditForm} />
+          <PrivateRoute exact path="/user/:id" component={UserPosts} />
+          <PrivateRoute exact path="/user" component={UserPage} />
+          <PrivateRoute exact path="/blog/:id/edit" component={EditPost} />
+          <PrivateRoute exact path="/new" component={AddPost} />
+
         </Switch>
       </div>
     </Router>

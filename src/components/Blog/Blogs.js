@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import axios from '../../axios-api';
 import Blog from './Blog';
+import { motion } from 'framer-motion';
 
 const Blogs = (props) => {
     const [posts, setPosts] = useState();
@@ -13,6 +14,7 @@ const Blogs = (props) => {
                 console.log(err);
             })
     }, [])
+
     return (
         <section className="text-gray-700 body-font">
             <div className="container px-5 py-24 mx-auto">
@@ -28,7 +30,8 @@ const Blogs = (props) => {
 
 
                 {posts ?
-                    <div className="flex flex-wrap sm:-m-4 -mx-4 -mb-10 -mt-4">
+                    <div initial="hidden" animation="visible"
+                        className="flex flex-wrap sm:-m-4 -mx-4 -mb-10 -mt-4">
                         {posts.map(post => <Blog post={post} key={post._id} />)}
                     </div>
                     : <div className="p-4 md:w-1/1 sm:mb-0 mb-6 self-center"><div style={{ textAlign: 'center' }}><h1>loading</h1></div></div>

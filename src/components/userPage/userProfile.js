@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import axios from '../../axios-api';
 import Blog from '../Blog/Blog';
+import { motion } from 'framer-motion';
 
 const UserPage = ({ user }) => {
 
@@ -25,13 +26,24 @@ const UserPage = ({ user }) => {
         // eslint-disable-next-line
     }, [user])
 
+    // Framer motion variants
+    const variants = {
+        hidden: { opacity: 0 },
+        visible: { opacity: 1 },
+    }
+
     return (
         <div>
             <section className="text-gray-700 body-font">
                 <div className="container mx-auto flex px-5 py-24 md:flex-row flex-col items-center">
-                    <div className="lg:max-w-lg lg:w-full md:w-1/2 w-5/6 mb-10 md:mb-0">
-                        <img className="object-cover object-center rounded" alt="hero" src={user.imageUrl} />
-                    </div>
+                    <motion.div initial="hidden"
+                        duration="2000"
+                        animate="visible"
+                        variants={variants}
+                        className="lg:max-w-lg lg:w-full md:w-1/2 w-5/6 mb-10 md:mb-0 overflow-hidden">
+                        {user.imageUrl ? <img className="h-full w-full object-cover object-center" alt="hero" src={user.imageUrl} />
+                            : <p className="text-center border border-teal-800 px-3 py-5 rounded">click on Edit Profile to add image</p>}
+                    </motion.div>
                     <div className="lg:flex-grow md:w-1/2 lg:pl-24 md:pl-16 flex flex-col md:items-start md:text-left items-center text-center">
                         <h1 className="title-font sm:text-4xl text-3xl mb-4 font-medium text-gray-900">{user.first_name + ' ' + user.last_name}</h1>
                         <p className="w-full mb-8 leading-relaxed">{user.bio}</p>
@@ -48,7 +60,7 @@ const UserPage = ({ user }) => {
 
                 {posts && posts.length ?
                     <div className="container mx-auto">
-                        <h2 className="mx-5 mb-5 text-2xl">Articles By {user.first_name}</h2>
+                        <h2 className="mx-5 mb-5 text-2xl">Posts by {user.first_name}</h2>
 
                         <div className="mx-5 mb-20 h-1 bg-gray-200 rounded overflow-hidden">
                             <div className="w-24 h-full bg-indigo-500"></div>
@@ -68,7 +80,6 @@ const UserPage = ({ user }) => {
                         </Link>
                     </div>
                 }
-
             </section>
         </div>
     )

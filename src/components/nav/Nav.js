@@ -51,7 +51,7 @@ const Nav = ({ loggedIn, logout, user }) => {
                         </div>
                     ) : (
                             <>
-                                <Link to="/user">
+                                <Link to={`/user`}>
                                     <span className="text-white mr-5">{currentUser && currentUser.first_name}</span>
                                 </Link>
                                 <Link to="/">

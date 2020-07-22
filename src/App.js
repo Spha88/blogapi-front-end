@@ -6,7 +6,8 @@ import Blog from './components/Blog/Blogs';
 import PostPage from './components/PostPage/PostPage';
 import Login from './components/Auth/Login';
 import Signup from './components/Auth/Signup';
-import UserPage from './components/userPage/userPage';
+import UserPage from './components/userPage/userProfile';
+import UserPosts from './components/userPage/userPosts';
 import AddPost from './components/AddPost/AddPost';
 import UserEditForm from './components/userPage/UserEditForm';
 
@@ -27,6 +28,7 @@ function App({ checkAuth }) {
           <Route exact path="/login" component={Login} />
           <Route exact path="/signup" component={Signup} />
           <Route exact path="/user" component={UserPage} />
+          <Route exact path="/user/:id" component={UserPosts} />
           <Route exact path="/user/edit" component={UserEditForm} />
           <Route exact path="/new" component={AddPost} />
         </Switch>

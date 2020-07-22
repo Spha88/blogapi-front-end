@@ -8,6 +8,7 @@ import { extract } from '../../helpers/helpers';
 
 const PostPage = (props) => {
     const [post, setPost] = useState(null);
+    const userId = JSON.parse(localStorage.getItem('currentUser'));
     const fetchPost = () => {
         axios.get(`/blogs/${props.match.params.id}`)
             .then(res => {
@@ -17,8 +18,8 @@ const PostPage = (props) => {
                 console.log(err);
             })
     }
-    const addComment = commentData => {
-        axios.post(`/blogs/${props.match.params.id}/comment`, { ...commentData })
+    const addComment = comment => {
+        axios.post(`/blogs/${props.match.params.id}/comment`, { ...comment, author: userId })
             .then(res => {
                 console.log(res.data);
                 fetchPost();
@@ -49,12 +50,14 @@ const PostPage = (props) => {
                                         <path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"></path>
                                         <circle cx="12" cy="7" r="4"></circle>
                                     </svg>
-                                    <img src={post.details.author.imageUrl} className="object-cover" alt="author image" />
+                                    {post.details.author.imageUrl && <img src={post.details.author.imageUrl} className="object-cover h-full w-full object-center" alt="author" />}
                                 </div>
                                 <div className="flex flex-col items-center text-center justify-center">
-                                    <h2 className="font-medium title-font mt-4 text-gray-900 text-lg">{`${post.details.author.first_name} ${post.details.author.last_name}`}</h2>
+                                    <h2 className="font-medium title-font mt-4 text-gray-900 text-lg">
+                                        <a href={`/user/${post.details.author._id}`}>{`${post.details.author.first_name} ${post.details.author.last_name}`}</a>
+                                    </h2>
                                     <div className="w-12 h-1 bg-indigo-500 rounded mt-2 mb-4"></div>
-                                    <p className="text-base text-gray-600">{extract(post.details.author.bio, 100)}</p>
+                                    <p className="text-base text-gray-600">{post.details.author.bio && extract(post.details.author.bio, 100)}</p>
                                 </div>
                             </div>
 
@@ -78,8 +81,10 @@ const PostPage = (props) => {
 
                                     <div className={`py-8 flex flex-wrap md:flex-no-wrap ${index > 0 ? 'border-t-2' : ''}`} key={comment._id}>
                                         <div className="md:w-64 md:mb-0 mb-6 flex-shrink-0 flex flex-col">
-                                            <span className="tracking-widest font-medium title-font text-gray-900">{comment.author}</span>
-                                            <span className="mt-1 text-gray-500 text-sm">{moment(comment.date).format('ddd DD MMMM, YYYY')}</span>
+                                            <a href={`/user/${comment.author._id}`}>
+                                                <span className="tracking-widest font-medium title-font text-gray-900">{comment.author.first_name + ' ' + comment.author.last_name}</span>
+                                            </a>
+                                            <span className="mt-1 text-gray-500 text-sm">{moment(comment.date).format('HH:MM ddd DD MMMM, YYYY')}</span>
                                         </div>
                                         <div className="md:flex-grow">
                                             <p className="leading-relaxed">{comment.body}</p>
@@ -95,7 +100,7 @@ const PostPage = (props) => {
                             </div>
                         </div>
 
-                        <AddCommentForm addComment={addComment} />
+                        <AddCommentForm addComment={addComment} user={post.details.author} />
 
                         <footer className="flex justify-center border-t-2 pt-10">
                             <Link to="/">

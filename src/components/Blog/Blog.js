@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import { extract } from '../../helpers/helpers';
 import DeleteModal from '../UI/DeleteModal';
 import axios from '../../axios-api';
+import { motion } from 'framer-motion';
 
 const Blog = ({ post, fetchPosts }) => {
     const [display, setDisplay] = useState(false)
@@ -12,7 +13,7 @@ const Blog = ({ post, fetchPosts }) => {
     // if this post belongs to the current user
 
     const user = JSON.parse(localStorage.getItem('currentUser'));
-    user && (owner = user._id === (post.author._id || post.author));
+    user && (owner = user === (post.author._id || post.author));
     const toggleDeleteModal = () => setDisplay(!display);
     const deletePost = () => {
         axios.delete(`/blogs/${post._id}`)
@@ -25,9 +26,13 @@ const Blog = ({ post, fetchPosts }) => {
 
     return (
         <div className="p-4 md:w-1/3 sm:mb-0 mb-6" key={post._id}>
-            <div className="rounded-lg h-64 overflow-hidden">
-                <img alt="content" className="object-cover object-center h-full w-full" src={post.imageUrl} />
-            </div>
+            <motion.div
+                whileHover={{ scale: 1.05 }}
+                className="rounded-lg h-64 overflow-hidden">
+                <Link to={`/blog/${post._id}`}>
+                    <img alt="content" className="object-cover object-center h-full w-full" src={post.imageUrl} />
+                </Link>
+            </motion.div>
             <h2 className="text-xl font-medium title-font text-gray-900 mt-5">{post.title}</h2>
             <p className="text-base leading-relaxed mt-2">{extract(post.body, 200)}</p>
             <div className="flex mt-3">

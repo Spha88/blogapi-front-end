@@ -3,22 +3,37 @@ import { useForm } from 'react-hook-form';
 import { Redirect, useHistory } from 'react-router-dom';
 import axios from '../../axios-api';
 
+import { connect } from 'react-redux';
+import { logout } from '../../store/actions/authentication';
+
 const AddPost = () => {
     const { register, handleSubmit } = useForm();
     let history = useHistory();
-    const user = JSON.parse(localStorage.getItem('currentUser'));
+    const user = localStorage.getItem('currentUser');
 
 
     const onSubmit = data => {
+        // Redirect if no userId (currentUser) in localStorage
+        // This means there is no one logged in
         if (!user) return <Redirect to="/login" />
+
+        //  Add userId as author to the comment data, the comment model in server
+        //  requires an author id.
         data = { ...data, author: user }
+
         axios.post(`/blogs`, { ...data })
             .then((res) => {
-                console.log(res);
                 history.push(`/blog/${res.data.post._id}`);
             })
             .catch((err) => {
-                console.log(err);
+
+                //If authorization error remove token from localStorage and ask the user to login
+                if (err.response.data === 'Unauthorized') {
+                    logout();
+                    history.push('/login');
+                }
+                //If not token error redirect to home page
+                history.push(`/`);
             })
     }
 
@@ -74,4 +89,4 @@ const AddPost = () => {
     )
 }
 
-export default AddPost
+export default connect(null, { logout })(AddPost)

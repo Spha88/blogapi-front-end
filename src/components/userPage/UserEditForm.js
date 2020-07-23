@@ -4,39 +4,47 @@ import { connect } from 'react-redux';
 import { useForm } from 'react-hook-form';
 import validator from 'validator';
 import { updateUser } from '../../store/actions/authentication';
+import { useHistory } from 'react-router-dom';
+import { logout } from '../../store/actions/authentication';
 
 const UserEditForm = ({ user, updateUser }) => {
     const [userProfile, setUserProfile] = useState(null);
     const [updated, setUpdated] = useState(false);
+    const history = useHistory();
+
     const { register, handleSubmit, errors } = useForm();
-    const userId = JSON.parse(localStorage.getItem('currentUser'));
+    const userId = localStorage.getItem('currentUser');
 
     const onSubmit = (data) => {
-        axios.put(`/users/${userId}/update`, { ...data }, {
-            headers: { 'Authorization': `Bearer ${localStorage.getItem('myJwt')}` }
-        })
+        axios.put(`/users/${userId}/update`, { ...data })
             .then((res) => {
                 setUserProfile(res.data.user);
                 updateUser(res.data.user);
                 setUpdated(true);
             })
             .catch((err) => {
-                console.log(err);
+                if (err.response.data === 'Unauthorized') {
+                    logout();
+                    history.push('/login');
+                }
+                history.push('/user');
             })
     }
 
     useEffect(() => {
         // Fetch user data to populate the form
-        axios.get(`/users/${userId}`, {
-            headers: { 'Authorization': `Bearer ${localStorage.getItem('myJwt')}` }
-        })
+        axios.get(`/users/${userId}`)
             .then((res) => {
-                console.log('Got user details from server')
                 setUserProfile(res.data.user);
             })
             .catch((err) => {
-                console.log(err);
+                if (err.response.data === 'Unauthorized') {
+                    logout();
+                    history.push('/login');
+                }
+                history.push('/user');
             })
+        // eslint-disable-next-line
     }, [userId])
 
     const inputClasses = "bg-white rounded border focus:outline-none focus:border-teal-500 text-base px-4 py-2 mb-0"
@@ -123,9 +131,9 @@ const UserEditForm = ({ user, updateUser }) => {
                         <button className="text-white bg-teal-800 border-0 py-2 px-8 focus:outline-none hover:bg-teal-600 rounded text-lg">Save</button>
                     </form>
                 ) : (
-                        <div class="w-full md:w-1/2 bg-blue-100 border rounded p-10 border-teal-800 text-blue-700 text-center" role="alert">
-                            <p class="font-bold ">Profile Updated</p>
-                            <p class="text-sm mt-10"><a href="/user" className="inline-block py-1 px-5 border rounded">View Profile</a></p>
+                        <div className="w-full md:w-1/2 bg-blue-100 border rounded p-10 border-teal-800 text-blue-700 text-center" role="alert">
+                            <p className="font-bold ">Profile Updated</p>
+                            <p className="text-sm mt-10"><a href="/user" className="inline-block py-1 px-5 border rounded">View Profile</a></p>
                         </div>
                     )}
 

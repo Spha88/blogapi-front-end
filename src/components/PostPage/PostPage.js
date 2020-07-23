@@ -6,20 +6,22 @@ import AddCommentForm from '../UI/AddCommentForm';
 import { extract } from '../../helpers/helpers';
 
 
-const PostPage = (props) => {
+const PostPage = ({ match }) => {
     const [post, setPost] = useState(null);
-    const userId = JSON.parse(localStorage.getItem('currentUser'));
+    const userId = localStorage.getItem('currentUser');
+    const postId = match.params.id;
+
     const fetchPost = () => {
-        axios.get(`/blogs/${props.match.params.id}`)
+        axios.get(`/blogs/${postId}`)
             .then(res => {
-                setPost(res.data.post)
+                setPost(res.data.post);
             })
             .catch(err => {
                 console.log(err);
             })
     }
     const addComment = comment => {
-        axios.post(`/blogs/${props.match.params.id}/comment`, { ...comment, author: userId })
+        axios.post(`/blogs/${postId}/comment`, { ...comment, author: userId })
             .then(res => {
                 console.log(res.data);
                 fetchPost();

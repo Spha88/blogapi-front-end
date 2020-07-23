@@ -10,7 +10,7 @@ const Blog = ({ post, fetchPosts }) => {
     let owner;
     // check if the user is logged in and display edit and delete button
     // if this post belongs to the current user
-    const user = JSON.parse(localStorage.getItem('currentUser')); // return logged in user's id
+    const user = localStorage.getItem('currentUser'); // return logged in user's id
 
     // post.author._id - true in UserPage and post.author will be true in posts(home) page
     user && (owner = user === (post.author._id || post.author));

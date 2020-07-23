@@ -12,7 +12,8 @@ export const authenticate = loginDetails => dispatch => {
     axios.post('/auth/login', { ...loginDetails })
         .then(res => {
             localStorage.setItem('myJwt', res.data.token);
-            localStorage.setItem('currentUser', JSON.stringify(res.data.user._id));
+            // localStorage.setItem('currentUser', JSON.stringify(res.data.user._id));
+            localStorage.setItem('currentUser', res.data.user._id);
             dispatch(logIn(res.data.user))
         })
         .catch(err => {

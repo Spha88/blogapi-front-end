@@ -2,36 +2,47 @@ import React, { useState, useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { Redirect, useHistory } from 'react-router-dom';
 import axios from '../../axios-api';
+import { connect } from 'react-redux';
+import { logout } from '../../store/actions/authentication';
 
-const EditPost = ({ match }) => {
+const EditPost = ({ match, logout }) => {
     const { register, handleSubmit } = useForm();
     const [post, setPost] = useState('')
     let history = useHistory();
 
-    const userId = JSON.parse(localStorage.getItem('currentUser'));
+    const userId = localStorage.getItem('currentUser');
     const postId = match.params.id;
 
     const onSubmit = data => {
+        // send data to server;
         data = { ...data, author: userId }
         axios.put(`/blogs/${postId}`, { ...data })
             .then((res) => {
-                console.log(res);
                 history.push(`/blog/${match.params.id}`);
             })
             .catch((err) => {
-                console.log(err);
+                if (err.response.data === 'Unauthorized') {
+                    logout();
+                    history.push('/login');
+                }
+                history.push('/user');
             })
     }
 
     useEffect(() => {
+        // Get post to fill the form with the
         axios.get(`/blogs/${match.params.id}/edit`)
             .then(res => {
-                console.log(res);
                 setPost(res.data.post);
             })
             .catch(err => {
-                console.log(err);
+                if (err.response.data === 'Unauthorized') {
+                    logout();
+                    history.push('/login');
+                }
+                history.push('/');
             })
+        // eslint-disable-next-line
     }, [match.params.id])
 
     // Redirect if there is no user logged in
@@ -92,4 +103,4 @@ const EditPost = ({ match }) => {
     )
 }
 
-export default EditPost;
+export default connect(null, { logout })(EditPost);

@@ -20,14 +20,18 @@ const UserPosts = ({ user, match, logout }) => {
                 // console.log("We are here")
                 if (err.response.data === 'Unauthorized') {
                     logout();
-                    console.log('Unauthorized, we redirect now')
-                    history.push('/login')
+                    console.log('Unauthorized, we redirect now');
+                    history.push('/login');
                 }
+
+                // if the error is not authorization, redirect to home page
+                history.push('/');
             })
     }
 
     useEffect(() => {
         fetchPosts();
+
         // eslint-disable-next-line
     }, [])
 

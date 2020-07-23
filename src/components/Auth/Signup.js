@@ -13,7 +13,7 @@ const Signup = () => {
     let history = useHistory();
 
     const onSubmit = data => {
-        axios.post('http://localhost:3000/users', { ...data })
+        axios.post('/users', { ...data })
             .then(res => {
                 history.push('/login')
             })

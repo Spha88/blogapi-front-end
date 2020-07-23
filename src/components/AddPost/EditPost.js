@@ -32,7 +32,7 @@ const EditPost = ({ match }) => {
             .catch(err => {
                 console.log(err);
             })
-    }, [])
+    }, [match.params.id])
 
     // Redirect if there is no user logged in
     if (!userId) return <Redirect to="/login" />

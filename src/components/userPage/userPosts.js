@@ -1,31 +1,35 @@
 import React, { useState, useEffect } from 'react';
 import { connect } from 'react-redux';
-import { Link } from 'react-router-dom';
+import { Link, useHistory } from 'react-router-dom';
 import axios from '../../axios-api';
 import Blog from '../Blog/Blog';
+import { logout } from '../../store/actions/authentication';
 
-const UserPosts = ({ user, match }) => {
+const UserPosts = ({ user, match, logout }) => {
 
     const [posts, setPosts] = useState()
+    const history = useHistory();
 
     const fetchPosts = () => {
-        if (user) {
-            axios.get(`/blogs/user/${match.params.id}`)
-                .then((res) => {
-                    setPosts(res.data.posts);
-                })
-                .catch((err) => {
-                    console.log(err);
-                })
-        }
+        axios.get(`/blogs/user/${match.params.id}`)
+            .then((res) => {
+                setPosts(res.data.posts);
+            })
+            .catch((err) => {
+                // the token has expired and therefore we need to clear it and login again
+                // console.log("We are here")
+                if (err.response.data === 'Unauthorized') {
+                    logout();
+                    console.log('Unauthorized, we redirect now')
+                    history.push('/login')
+                }
+            })
     }
-
-    console.log(posts);
 
     useEffect(() => {
         fetchPosts();
         // eslint-disable-next-line
-    }, [user])
+    }, [])
 
     return (
         <div>
@@ -52,7 +56,6 @@ const UserPosts = ({ user, match }) => {
                         </Link>
                     </div>
                 }
-
             </section>
         </div>
     )
@@ -61,4 +64,4 @@ const mapStateToProps = state => ({
     user: state.auth.user
 })
 
-export default connect(mapStateToProps)(UserPosts);
+export default connect(mapStateToProps, { logout })(UserPosts);

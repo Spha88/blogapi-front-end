@@ -33,8 +33,6 @@ const PostPage = (props) => {
         // eslint-disable-next-line
     }, [])
 
-    console.log(post);
-
     return (
         <section className="text-gray-700 body-font">
             {post ? (

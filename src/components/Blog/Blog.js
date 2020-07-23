@@ -8,11 +8,11 @@ import { motion } from 'framer-motion';
 const Blog = ({ post, fetchPosts }) => {
     const [display, setDisplay] = useState(false)
     let owner;
-
     // check if the user is logged in and display edit and delete button
     // if this post belongs to the current user
+    const user = JSON.parse(localStorage.getItem('currentUser')); // return logged in user's id
 
-    const user = JSON.parse(localStorage.getItem('currentUser'));
+    // post.author._id - true in UserPage and post.author will be true in posts(home) page
     user && (owner = user === (post.author._id || post.author));
     const toggleDeleteModal = () => setDisplay(!display);
     const deletePost = () => {

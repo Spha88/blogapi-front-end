@@ -24,8 +24,7 @@ export const authenticate = loginDetails => dispatch => {
 }
 
 export const logout = () => dispatch => {
-    localStorage.removeItem('myJwt');
-    localStorage.removeItem('currentUser');
+    localStorage.clear();
     dispatch({ type: actionTypes.LOGOUT });
 }
 

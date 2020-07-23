@@ -4,7 +4,7 @@ import { useHistory } from 'react-router-dom';
 import validator from 'validator';
 import { useForm } from 'react-hook-form';
 
-import axios from 'axios';
+import axios from '../../axios-api';
 
 const Signup = () => {
     const { register, handleSubmit, getValues, errors } = useForm();

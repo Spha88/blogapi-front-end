@@ -7,18 +7,19 @@ import { motion } from 'framer-motion';
 
 const UserPage = ({ user }) => {
 
-    const [posts, setPosts] = useState()
+    const [posts, setPosts] = useState();
+    const userId = localStorage.getItem('currentUser');
 
     const fetchPosts = () => {
-        if (user) {
-            axios.get(`/blogs/user/${user._id}`)
-                .then((res) => {
-                    setPosts(res.data.posts);
-                })
-                .catch((err) => {
-                    console.log(err);
-                })
-        }
+
+        axios.get(`/blogs/user/${userId}`)
+            .then((res) => {
+                setPosts(res.data.posts);
+            })
+            .catch((err) => {
+                console.log(err);
+            })
+
     }
 
     useEffect(() => {

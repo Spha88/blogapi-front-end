@@ -7,7 +7,7 @@ import { logout } from '../../store/actions/authentication';
 
 const EditPost = ({ match, logout }) => {
     const { register, handleSubmit } = useForm();
-    const [post, setPost] = useState('')
+    const [post, setPost] = useState('');
     let history = useHistory();
 
     const userId = localStorage.getItem('currentUser');
@@ -31,16 +31,18 @@ const EditPost = ({ match, logout }) => {
 
     useEffect(() => {
         // Get post to fill the form with the
-        axios.get(`/blogs/${match.params.id}/edit`)
+        axios.get(`/blogs/${postId}/edit`)
             .then(res => {
                 setPost(res.data.post);
             })
             .catch(err => {
                 if (err.response.data === 'Unauthorized') {
-                    logout();
-                    history.push('/login');
+                    console.log('FETCHING POST DATA FAILED - AUTHORIZATION ISSUE');
+                    // logout();
+                    // history.push('/login');
                 }
-                history.push('/');
+                console.log('FETCHING POST DATA FAILED', err)
+                // history.push('/');
             })
         // eslint-disable-next-line
     }, [match.params.id])

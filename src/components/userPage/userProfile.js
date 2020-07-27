@@ -11,7 +11,6 @@ const UserPage = ({ user }) => {
     const userId = localStorage.getItem('currentUser');
 
     const fetchPosts = () => {
-        console.log('Fetched Posts');
         axios.get(`/blogs/user/${userId}`)
             .then((res) => {
                 setPosts(res.data.posts);

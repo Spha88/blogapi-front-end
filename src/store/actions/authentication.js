@@ -13,7 +13,7 @@ export const authenticate = loginDetails => dispatch => {
         .then(res => {
             localStorage.setItem('myJwt', res.data.token);
             localStorage.setItem('currentUser', res.data.user._id);
-            axios.defaults.headers.common['authorization'] = `Bearer ${res.data.token}`;
+            axios.defaults.headers.common['Authorization'] = `Bearer ${res.data.token}`;
             dispatch(logIn(res.data.user))
         })
         .catch(err => {
@@ -29,30 +29,20 @@ export const logout = () => dispatch => {
     dispatch({ type: actionTypes.LOGOUT });
 }
 
-/** check if authenticated on reload or load
- *  and change the state to loggedIn = true
- */
+// check if authenticated on reload or load and change the state to loggedIn = true
 export const checkAuth = () => dispatch => {
     // get token and user from localStorage
     const token = localStorage.getItem('myJwt');
     const currentUser = localStorage.getItem('currentUser');
-    if (token) {
-        //if there's a token and userId get user from database and add to state
-        axios.get(`/users/${currentUser}`, {
-            headers: { 'Authorization': `Bearer ${localStorage.getItem('myJwt')}` }
-        })
-            .then((res) => {
-                axios.defaults.headers.common['authorization'] = `Bearer ${token}`;
-                dispatch(logIn(res.data.user));
-            })
-            .catch((err) => {
-                console.log(err);
-            })
+
+    if (token) {//if there's a token and userId, get user from database and add to state
+        axios.get(`/users/${currentUser}`)
+            .then(res => dispatch(logIn(res.data.user)))
+            .catch(err => dispatch({ type: actionTypes.LOGOUT }))
     }
 }
 
 export const updateUser = user => dispatch => {
-    console.log(user);
     dispatch({
         type: actionTypes.UPDATE_USER,
         payload: user

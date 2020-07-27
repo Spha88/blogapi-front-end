@@ -16,10 +16,8 @@ const instance = axios.create({
 
 if (authToken) {
     instance.defaults.headers.common['Authorization'] = `Bearer ${authToken}`;
-    console.log('Added auth to axios instance')
 } else {
     instance.defaults.headers.common['Authorization'] = null;
-    console.log('Not yet added auth to axios instance')
 }
 
 export default instance;

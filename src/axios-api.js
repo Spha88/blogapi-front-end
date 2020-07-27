@@ -11,10 +11,7 @@ if (process.env.NODE_ENV === 'production') {
 }
 
 const instance = axios.create({
-    baseURL: url,
-    headers: {
-        'Authorization': `Bearer ${token}`
-    }
+    baseURL: url
 });
 
 export default instance;

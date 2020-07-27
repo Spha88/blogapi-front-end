@@ -12,8 +12,8 @@ export const authenticate = loginDetails => dispatch => {
     axios.post('/auth/login', { ...loginDetails })
         .then(res => {
             localStorage.setItem('myJwt', res.data.token);
-            // localStorage.setItem('currentUser', JSON.stringify(res.data.user._id));
             localStorage.setItem('currentUser', res.data.user._id);
+            axios.defaults.headers.common['authorization'] = `Bearer ${res.data.token}`;
             dispatch(logIn(res.data.user))
         })
         .catch(err => {
@@ -37,10 +37,12 @@ export const checkAuth = () => dispatch => {
     const token = localStorage.getItem('myJwt');
     const currentUser = localStorage.getItem('currentUser');
     if (token) {
+        //if there's a token and userId get user from database and add to state
         axios.get(`/users/${currentUser}`, {
             headers: { 'Authorization': `Bearer ${localStorage.getItem('myJwt')}` }
         })
             .then((res) => {
+                axios.defaults.headers.common['authorization'] = `Bearer ${token}`;
                 dispatch(logIn(res.data.user));
             })
             .catch((err) => {

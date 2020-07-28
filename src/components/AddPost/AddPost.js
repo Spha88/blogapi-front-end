@@ -6,7 +6,7 @@ import axios from '../../axios-api';
 import { connect } from 'react-redux';
 import { logout } from '../../store/actions/authentication';
 
-import { Editor } from '@tinymce/tinymce-react';
+import Editor from '../UI/Editor';
 
 const AddPost = () => {
     const { register, handleSubmit } = useForm();
@@ -70,21 +70,7 @@ const AddPost = () => {
                         </div>
 
                         <div className="mx-2 w-full mt-5 rounded overflow-hidden border border-gray">
-                            <Editor initialValue="<p>This is the initial content of the editor</p>"
-                                init={{
-                                    height: 500,
-                                    menubar: false,
-                                    plugins: [
-                                        'advlist autolink lists link image charmap print preview anchor',
-                                        'searchreplace visualblocks code fullscreen',
-                                        'insertdatetime media table paste code help'
-                                    ],
-                                    toolbar: 'undo redo | formatselect | bold italic backcolor | \
-                       alignleft aligncenter alignright alignjustify | \
-                       bullist numlist outdent indent | removeformat | help'
-                                }}
-                                onEditorChange={handleEditorChange}
-                            />
+                            <Editor handleChange={handleEditorChange} initialValue="Type your post" />
                         </div>
 
                         <div className="md:flex md:items-center p-2">

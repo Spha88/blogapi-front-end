@@ -5,7 +5,7 @@ import axios from '../../axios-api';
 import { connect } from 'react-redux';
 import { logout } from '../../store/actions/authentication';
 
-import { Editor } from '@tinymce/tinymce-react';
+import Editor from '../UI/Editor';
 
 const EditPost = ({ match, logout }) => {
 
@@ -84,21 +84,7 @@ const EditPost = ({ match, logout }) => {
                         </div>
 
                         <div className="mx-2 w-full mt-5 rounded overflow-hidden border border-gray">
-                            <Editor initialValue={post.body}
-                                init={{
-                                    height: 500,
-                                    menubar: false,
-                                    plugins: [
-                                        'advlist autolink lists link image charmap print preview anchor',
-                                        'searchreplace visualblocks code fullscreen',
-                                        'insertdatetime media table paste code help'
-                                    ],
-                                    toolbar: 'undo redo | formatselect | bold italic backcolor | \
-                       alignleft aligncenter alignright alignjustify | \
-                       bullist numlist outdent indent | removeformat | help'
-                                }}
-                                onEditorChange={handleEditorChange}
-                            />
+                            <Editor handleChange={handleEditorChange} initialValue={post.body} />
                         </div>
 
                         <div className="md:flex md:items-center p-2">

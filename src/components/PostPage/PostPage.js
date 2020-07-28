@@ -4,7 +4,6 @@ import axios from '../../axios-api';
 import moment from 'moment';
 import AddCommentForm from '../UI/AddCommentForm';
 import { extract } from '../../helpers/helpers';
-import classes from './PostPage.module.scss';
 
 
 const PostPage = ({ match }) => {

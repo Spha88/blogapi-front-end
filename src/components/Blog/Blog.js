@@ -33,8 +33,8 @@ const Blog = ({ post, fetchPosts }) => {
                     <img alt="content" className="object-cover object-center h-full w-full" src={post.imageUrl} />
                 </Link>
             </motion.div>
-            <h2 className="text-xl font-medium title-font text-gray-900 mt-5">{post.title}</h2>
-            <p className="text-base leading-relaxed mt-2">{extract(post.body, 200)}</p>
+            <h2 className="text-xl font-medium title-font text-gray-900 mt-5">{decodeURI(post.title)}</h2>
+            <div className="text-base leading-relaxed mt-2" dangerouslySetInnerHTML={{ __html: extract(decodeURI(post.body), 200) }} />
             <div className="flex mt-3">
                 <div className="w-1/3 flex items-center">
                     <Link to={`/blog/${post._id}`}>

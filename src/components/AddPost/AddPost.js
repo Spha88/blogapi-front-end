@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { Redirect, useHistory } from 'react-router-dom';
 import axios from '../../axios-api';
@@ -6,10 +6,17 @@ import axios from '../../axios-api';
 import { connect } from 'react-redux';
 import { logout } from '../../store/actions/authentication';
 
+import { Editor } from '@tinymce/tinymce-react';
+
 const AddPost = () => {
     const { register, handleSubmit } = useForm();
+    const [postBody, setPostBody] = useState();
     let history = useHistory();
     const user = localStorage.getItem('currentUser');
+
+    const handleEditorChange = (content, editor) => {
+        setPostBody(content);
+    }
 
 
     const onSubmit = data => {
@@ -19,7 +26,7 @@ const AddPost = () => {
 
         //  Add userId as author to the comment data, the comment model in server
         //  requires an author id.
-        data = { ...data, author: user }
+        data = { ...data, body: postBody, author: user }
 
         axios.post(`/blogs`, { ...data })
             .then((res) => {
@@ -62,11 +69,22 @@ const AddPost = () => {
                             />
                         </div>
 
-                        <div className="p-2 w-full">
-                            <textarea name="body" placeholder="Write your post here"
-                                className={`${inputClasses} resize-none block h-48`}
-                                ref={register}
-                            ></textarea>
+                        <div className="mx-2 w-full mt-5 rounded overflow-hidden border border-gray">
+                            <Editor initialValue="<p>This is the initial content of the editor</p>"
+                                init={{
+                                    height: 500,
+                                    menubar: false,
+                                    plugins: [
+                                        'advlist autolink lists link image charmap print preview anchor',
+                                        'searchreplace visualblocks code fullscreen',
+                                        'insertdatetime media table paste code help'
+                                    ],
+                                    toolbar: 'undo redo | formatselect | bold italic backcolor | \
+                       alignleft aligncenter alignright alignjustify | \
+                       bullist numlist outdent indent | removeformat | help'
+                                }}
+                                onEditorChange={handleEditorChange}
+                            />
                         </div>
 
                         <div className="md:flex md:items-center p-2">
@@ -83,6 +101,8 @@ const AddPost = () => {
                         </div>
 
                     </form>
+
+
                 </div>
             </div>
         </section >

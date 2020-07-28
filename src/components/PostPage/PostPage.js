@@ -4,6 +4,7 @@ import axios from '../../axios-api';
 import moment from 'moment';
 import AddCommentForm from '../UI/AddCommentForm';
 import { extract } from '../../helpers/helpers';
+import classes from './PostPage.module.scss';
 
 
 const PostPage = ({ match }) => {
@@ -63,11 +64,9 @@ const PostPage = ({ match }) => {
 
                             <div className="sm:w-2/3 sm:pl-8 sm:py-8 sm:border-l border-gray-300 sm:border-t-0 border-t mt-4 pt-4 sm:mt-0 text-center sm:text-left">
 
-                                <h1 className="text-2xl font-semibold pb-4">{post.details.title}</h1>
+                                <h1 className="text-2xl font-semibold pb-4">{decodeURI(post.details.title)}</h1>
 
-                                <p className="leading-relaxed text-lg mb-4">
-                                    {post.details.body}
-                                </p>
+                                <div className={`leading-relaxed mb-4 post-body`} dangerouslySetInnerHTML={{ __html: post.details.body }} />
 
                                 <div>{moment(post.details.date).format('ddd DD MMMM, YYYY')}</div>
                             </div>
@@ -79,17 +78,15 @@ const PostPage = ({ match }) => {
                             <div className="-my-8">
                                 {post.comments.length ? post.comments.map((comment, index) => (
 
-                                    <div className={`py-8 flex flex-wrap md:flex-no-wrap ${index > 0 ? 'border-t-2' : ''}`} key={comment._id}>
+                                    <div className={`py-8 flex flex-wrap md: {index > 0 ? 'border-t-2' : ''}`} key={comment._id}>
                                         <div className="md:w-64 md:mb-0 mb-6 flex-shrink-0 flex flex-col">
                                             <a href={`/user/${comment.author._id}`}>
                                                 <span className="tracking-widest font-medium title-font text-gray-900">{comment.author.first_name + ' ' + comment.author.last_name}</span>
                                             </a>
                                             <span className="mt-1 text-gray-500 text-sm">{moment(comment.date).format('HH:MM ddd DD MMMM, YYYY')}</span>
                                         </div>
-                                        <div className="md:flex-grow">
-                                            <p className="leading-relaxed">{comment.body}</p>
-                                        </div>
 
+                                        <div className="md:flex-grow leading-relaxed" dangerouslySetInnerHTML={{ __html: decodeURI(comment.body) }} />
                                     </div>
 
                                 )) : (

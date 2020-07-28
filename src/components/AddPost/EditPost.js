@@ -5,17 +5,25 @@ import axios from '../../axios-api';
 import { connect } from 'react-redux';
 import { logout } from '../../store/actions/authentication';
 
+import { Editor } from '@tinymce/tinymce-react';
+
 const EditPost = ({ match, logout }) => {
+
     const { register, handleSubmit } = useForm();
-    const [post, setPost] = useState('');
+    const [post, setPost] = useState('')
+    const [postBody, setPostBody] = useState();
     let history = useHistory();
 
     const userId = localStorage.getItem('currentUser');
     const postId = match.params.id;
 
+    const handleEditorChange = (content, editor) => {
+        setPostBody(content);
+    }
+
     const onSubmit = data => {
         // send data to server;
-        data = { ...data, author: userId }
+        data = { ...data, body: postBody, author: userId }
         axios.put(`/blogs/${postId}`, { ...data })
             .then((res) => {
                 history.push(`/blog/${match.params.id}`);
@@ -31,18 +39,16 @@ const EditPost = ({ match, logout }) => {
 
     useEffect(() => {
         // Get post to fill the form with the
-        axios.get(`/blogs/${postId}/edit`)
+        axios.get(`/blogs/${match.params.id}/edit`)
             .then(res => {
                 setPost(res.data.post);
             })
             .catch(err => {
                 if (err.response.data === 'Unauthorized') {
-                    console.log('FETCHING POST DATA FAILED - AUTHORIZATION ISSUE');
-                    // logout();
-                    // history.push('/login');
+                    logout();
+                    history.push('/login');
                 }
-                console.log('FETCHING POST DATA FAILED', err)
-                // history.push('/');
+                history.push('/');
             })
         // eslint-disable-next-line
     }, [match.params.id])
@@ -77,12 +83,22 @@ const EditPost = ({ match, logout }) => {
                             />
                         </div>
 
-                        <div className="p-2 w-full">
-                            <textarea name="body" placeholder="Write your post here"
-                                defaultValue={post.body}
-                                className={`${inputClasses} resize-none block h-48`}
-                                ref={register}
-                            ></textarea>
+                        <div className="mx-2 w-full mt-5 rounded overflow-hidden border border-gray">
+                            <Editor initialValue={post.body}
+                                init={{
+                                    height: 500,
+                                    menubar: false,
+                                    plugins: [
+                                        'advlist autolink lists link image charmap print preview anchor',
+                                        'searchreplace visualblocks code fullscreen',
+                                        'insertdatetime media table paste code help'
+                                    ],
+                                    toolbar: 'undo redo | formatselect | bold italic backcolor | \
+                       alignleft aligncenter alignright alignjustify | \
+                       bullist numlist outdent indent | removeformat | help'
+                                }}
+                                onEditorChange={handleEditorChange}
+                            />
                         </div>
 
                         <div className="md:flex md:items-center p-2">

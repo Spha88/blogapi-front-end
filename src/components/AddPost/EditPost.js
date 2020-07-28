@@ -84,7 +84,7 @@ const EditPost = ({ match, logout }) => {
                         </div>
 
                         <div className="mx-2 w-full mt-5 rounded overflow-hidden border border-gray">
-                            <Editor handleChange={handleEditorChange} initialValue={post.body} />
+                            {post.body && <Editor handleChange={handleEditorChange} initialValue={post.body} />}
                         </div>
 
                         <div className="md:flex md:items-center p-2">

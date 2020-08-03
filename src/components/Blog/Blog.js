@@ -34,7 +34,7 @@ const Blog = ({ post, fetchPosts }) => {
                 </Link>
             </motion.div>
             <h2 className="text-xl font-medium title-font text-gray-900 mt-5">{decodeURI(post.title)}</h2>
-            <div className="text-base leading-relaxed mt-2" dangerouslySetInnerHTML={{ __html: extract(decodeURI(post.body), 200) }} />
+            <div className="text-base leading-relaxed mt-2" dangerouslySetInnerHTML={{ __html: extract(decodeURI(post.body), 300) }} />
             <div className="flex mt-3">
                 <div className="w-1/3 flex items-center">
                     <Link to={`/blog/${post._id}`}>

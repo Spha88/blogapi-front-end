@@ -57,7 +57,9 @@ const PostPage = ({ match }) => {
                                         <a href={`/user/${post.details.author._id}`}>{`${post.details.author.first_name} ${post.details.author.last_name}`}</a>
                                     </h2>
                                     <div className="w-12 h-1 bg-indigo-500 rounded mt-2 mb-4"></div>
-                                    <p className="text-base text-gray-600">{post.details.author.bio && extract(post.details.author.bio, 100)}</p>
+
+                                    {post.details.author.bio &&
+                                        <p className="text-base text-gray-600" dangerouslySetInnerHTML={{ __html: extract(post.details.author.bio, 100) }} />}
                                 </div>
                             </div>
 

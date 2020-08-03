@@ -6,17 +6,24 @@ import validator from 'validator';
 import { updateUser } from '../../store/actions/authentication';
 import { useHistory } from 'react-router-dom';
 import { logout } from '../../store/actions/authentication';
+import Editor from '../UI/Editor';
 
 const UserEditForm = ({ user, updateUser }) => {
     const [userProfile, setUserProfile] = useState(null);
     const [updated, setUpdated] = useState(false);
+    const [userBio, setUserBio] = useState('');
     const history = useHistory();
 
     const { register, handleSubmit, errors } = useForm();
     const userId = localStorage.getItem('currentUser');
 
+    const handleEditorChange = (content, editor) => {
+        setUserBio(content);
+    }
+
     const onSubmit = (data) => {
-        axios.put(`/users/${userId}/update`, { ...data })
+
+        axios.put(`/users/${userId}/update`, { ...data, bio: userBio })
             .then((res) => {
                 setUserProfile(res.data.user);
                 updateUser(res.data.user);
@@ -119,16 +126,10 @@ const UserEditForm = ({ user, updateUser }) => {
                         />
                         <p className={errClasses}>{errors.last_name && errors.last_name.message}</p>
 
-
-                        <textarea name="bio" placeholder="Bio"
-                            className={`${inputClasses} resize-none block h-32`}
-                            defaultValue={userProfile ? userProfile.bio : ''}
-                            ref={register}
-                        ></textarea>
-                        <p className={errClasses}>{errors.bio && errors.bio.message}</p>
+                        {userProfile && <Editor handleChange={handleEditorChange} initialValue={userProfile.bio} />}
 
 
-                        <button className="text-white bg-teal-800 border-0 py-2 px-8 focus:outline-none hover:bg-teal-600 rounded text-lg">Save</button>
+                        <button className="text-white bg-teal-800 border-0 mt-5 py-2 px-8 focus:outline-none hover:bg-teal-600 rounded text-lg">Save</button>
                     </form>
                 ) : (
                         <div className="w-full md:w-1/2 bg-blue-100 border rounded p-10 border-teal-800 text-blue-700 text-center" role="alert">

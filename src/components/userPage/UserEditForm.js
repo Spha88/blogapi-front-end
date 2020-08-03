@@ -21,8 +21,7 @@ const UserEditForm = ({ user, updateUser }) => {
         setUserBio(content);
     }
 
-    const onSubmit = (data) => {
-
+    const onSubmit = data => {
         axios.put(`/users/${userId}/update`, { ...data, bio: userBio })
             .then((res) => {
                 setUserProfile(res.data.user);
@@ -42,6 +41,7 @@ const UserEditForm = ({ user, updateUser }) => {
         // Fetch user data to populate the form
         axios.get(`/users/${userId}`)
             .then((res) => {
+                setUserBio(res.data.user.bio);
                 setUserProfile(res.data.user);
             })
             .catch((err) => {

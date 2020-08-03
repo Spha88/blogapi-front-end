@@ -25,10 +25,10 @@ const EditPost = ({ match, logout }) => {
         // send data to server;
         data = { ...data, body: postBody, author: userId }
         axios.put(`/blogs/${postId}`, { ...data })
-            .then((res) => {
+            .then(res => {
                 history.push(`/blog/${match.params.id}`);
             })
-            .catch((err) => {
+            .catch(err => {
                 if (err.response.data === 'Unauthorized') {
                     logout();
                     history.push('/login');
@@ -41,6 +41,7 @@ const EditPost = ({ match, logout }) => {
         // Get post to fill the form with the
         axios.get(`/blogs/${match.params.id}/edit`)
             .then(res => {
+                setPostBody(res.data.post.body);
                 setPost(res.data.post);
             })
             .catch(err => {

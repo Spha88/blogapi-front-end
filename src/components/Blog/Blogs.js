@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import axios from '../../axios-api';
 import Blog from './Blog';
+import Loader from '../UI/Loader/Loader';
 
 const Blogs = (props) => {
     const [posts, setPosts] = useState();
@@ -31,7 +32,9 @@ const Blogs = (props) => {
                     </div>
                     <div className="flex flex-wrap sm:flex-row flex-col py-6 mb-12">
                         <h1 className="sm:w-2/5 text-gray-900 font-medium title-font text-2xl mb-2 sm:mb-0">My Journey form Newbie to FullStack Developer</h1>
-                        <p className="sm:w-3/5 leading-relaxed text-base sm:pl-10 pl-0">This Blog is part of a solution to an assignment from The Odin Project to practice and see the benefits of creating an API only backend. <strong>BAPI</strong> = Blog API</p>
+                        <p className="sm:w-3/5 leading-relaxed text-base sm:pl-10 pl-0">This Blog is part of a solution to an assignment
+                        from The Odin Project to practice and see the benefits of creating an API only backend.
+                        </p>
                     </div>
                 </div>
 
@@ -49,9 +52,7 @@ const Blogs = (props) => {
                         </div>)
                         :
                         (<div className="p-4 md:w-1/1 sm:mb-0 mb-6 self-center">
-                            <div className="text-center">
-                                <h1>Loading</h1>
-                            </div>
+                            <Loader />
                         </div>)
                 }
             </div>

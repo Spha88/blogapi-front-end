@@ -4,6 +4,7 @@ import axios from '../../axios-api';
 import moment from 'moment';
 import AddCommentForm from '../UI/AddCommentForm';
 import { extract } from '../../helpers/helpers';
+import Loader from '../UI/Loader/Loader';
 
 
 const PostPage = ({ match }) => {
@@ -112,10 +113,8 @@ const PostPage = ({ match }) => {
 
                 </div>
             ) : (
-                    <div>
-                        <div>
-                            <h2>Loading</h2>
-                        </div>
+                    <div className="h-full flex justify-center">
+                        <Loader />
                     </div>
                 )
             }
